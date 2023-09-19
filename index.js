@@ -1,11 +1,12 @@
 class Product{
-    constructor(title, description, price, thumbnail, code, stock){
-        this._title
-        this._description
-        this._price
-        this._thumbnail
-        this._code
-        this._stock
+    constructor(productIdCounter, title, description, price, thumbnail, code, stock){
+        this._id = productIdCounter++;
+        this._title = title;
+        this._description = description;
+        this._price = price;
+        this._thumbnail = thumbnail;
+        this._code = code;
+        this._stock = stock
     }
     get title(){
         return this._title;
@@ -47,20 +48,54 @@ class Product{
 
 class ProductManager {
     constructor(products){
-        this.products = products
+        this.products = products;
+        this.productIdCounter = 1;
 }
 addProducts(product){
+    if (!title || !description || !price || !thumbnail || !code || !stock) {
+        console.error("Todos los campos son obligatorios");
+        return;
+    }
+    if (this.products.some((product) => product.code === code)) {
+        console.error("El código de producto ya está en uso");
+        return;
+    }
     return this.products.push(product)
 }
 getProducts(){
     return this.products
 }
 getProductsById(){
-
+    this.products.find((product) => product.id === id);
+    if (product) {
+        return product;
+    } else {
+        console.error("Producto no encontrado");
+        return null;
+    }
 }
 }
+const productManager = new ProductManager();
+console.log("Productos iniciales:", productManager.getProducts()); // tiene que mostrar: "Productos iniciales: []"
 
-const product1 = new Product("Producto Prueba", "Este es un producto de prueba", 200, "sin imagen", "abc123", 25)
+productManager.addProduct(
+	"producto prueba",
+	"Este es un producto prueba",
+	200,
+	"Sin imagen",
+	"abc123",
+	25
+);
 
-const productManager = new ProductManager([product1])
-productManager.addProducts(new Product("Producto2", "Este es un producto de prueba", 300, "sin imagen", "abc124", 28))
+console.log("Productos después de agregar uno:", productManager.getProducts());
+productManager.addProduct(
+	"producto repetido",
+	"Este es un producto repetido",
+	150,
+	"Sin imagen",
+	"abc123",
+	10
+);
+const foundProduct = productManager.getProductById(1);
+console.log("Producto encontrado por ID:", foundProduct);
+const notFoundProduct = productManager.getProductById(99);
